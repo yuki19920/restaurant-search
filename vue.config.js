@@ -8,12 +8,25 @@ module.exports = defineConfig({
 module.exports = {
   devServer: {
     proxy: {
-      "https://webservice.recruit.co.jp": {
-        target: "http://localhost:8080",
+      '/hotpepper': {  // プロキシのエンドポイントを指定
+        target: 'https://webservice.recruit.co.jp',  // 対象のAPIエンドポイント
+        changeOrigin: true,
+        pathRewrite: {
+          '^/hotpepper': ''  // プロキシパスのリライト（省略）
+        }
       }
     }
   }
-};
+}
+// module.exports = {
+//   devServer: {
+//     proxy: {
+//       "https://webservice.recruit.co.jp": {
+//         target: "http://localhost:8080",
+//       }
+//     }
+//   }
+// };
 // module.exports = {
 //   devServer: {
 //     proxy: {

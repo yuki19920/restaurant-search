@@ -29,11 +29,16 @@
     </v-row>
     <v-row justify="center" align-content="center">
       <v-col cols="2" sm="1" md="1" lg="1">
-        <v-btn @click="start" elevation="2" :loading="loading" x-large
-          >検索</v-btn
-        >
+        <v-btn @click="start" elevation="2" x-large>検索</v-btn>
       </v-col>
     </v-row>
+    <template>
+      <v-app>
+        <v-overlay :value="isLoading">
+          <v-progress-circular indeterminate size="64" />
+        </v-overlay>
+      </v-app>
+    </template>
   </v-container>
 </template>
 
@@ -46,6 +51,7 @@ export default {
       longitude: 0,
       hotelRange: [3, 2, 1],
       hotelKm: 3,
+      isLoading: false,
       restaurantRange: [
         { km: 3, id: 5 },
         { km: 2, id: 4 },
@@ -54,7 +60,6 @@ export default {
         { km: 0.3, id: 1 },
       ],
       restaurantKm: 5,
-      loading: false,
       key: "a3f373377f111532",
       genre: [
         { id: null, genreName: "-------------------------------" },
@@ -77,11 +82,12 @@ export default {
         { id: "G015", genreName: "その他・グルメ" },
       ],
       selectedGenre: null,
-      resSearchingInfo: {},
+      resSearchingInfo: {}
     };
   },
   methods: {
     start() {
+      this.isLoading = true;
       navigator.geolocation.getCurrentPosition(this.success, this.error);
     },
     success(position) {
@@ -105,29 +111,41 @@ export default {
             "&searchRadius=" +
             this.hotelKm
         )
-        .then((response) => this.$emit("hotels", response.data.hotels))
+        .then((response) => {
+          this.$emit("hotels", response.data.hotels);
+        })
         .catch((error) => {
           console.log(error);
           alert("ホテル情報が取得できません");
         });
     },
     searchRestaurant() {
+      console.log(this.selectedGenre);
       axios
-        .get("https://webservice.recruit.co.jp/hotpepper/gourmet/v1/", {
+        .get("/hotpepper/hotpepper/gourmet/v1/", {
           params: {
             key: this.key,
             lat: this.latitude,
             lng: this.longitude,
             range: this.restaurantKm,
+            genre: this.selectedGenre,
             format: "json",
           },
         })
         .then((response) => {
-          console.log(response);
+          this.$emit("restaurants", response.data.results);
+          this.resSearchingInfo = {
+            lat: this.latitude,
+            lng: this.longitude,
+            restaurantKm: this.restaurantKm,
+            genre: this.selectedGenre,
+          };
+          this.$emit("resSearchingInfo", this.resSearchingInfo);
+          this.isLoading = false;
+          //this.$emit("getCurrentComponent", "RestaurantSearch");
         })
         .catch((error) => {
-          console.log(error);
-          alert("飲食店情報が取得できません");
+          console.error("APIリクエストエラー:", error);
         });
     },
   },

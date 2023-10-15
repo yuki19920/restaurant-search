@@ -91,7 +91,7 @@ export default {
     HotelSearch,
     RestaurantSearch,
   },
-
+  
   data: () => ({
     hotels: {},
     restaurants: {},
