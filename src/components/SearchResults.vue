@@ -82,7 +82,7 @@ export default {
         { id: "G015", genreName: "その他・グルメ" },
       ],
       selectedGenre: null,
-      resSearchingInfo: {}
+      resSearchingInfo: {},
     };
   },
   methods: {
@@ -93,8 +93,8 @@ export default {
     success(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
-      this.latitude = "35.6457325";
-      this.longitude = "139.7477088";
+      //this.latitude = "34.663052";
+      //this.longitude = "135.5022679";
       this.searchHotel();
       this.searchRestaurant();
     },
@@ -120,7 +120,6 @@ export default {
         });
     },
     searchRestaurant() {
-      console.log(this.selectedGenre);
       axios
         .get("/hotpepper/hotpepper/gourmet/v1/", {
           params: {
@@ -141,8 +140,10 @@ export default {
             genre: this.selectedGenre,
           };
           this.$emit("resSearchingInfo", this.resSearchingInfo);
-          this.isLoading = false;
-          //this.$emit("getCurrentComponent", "RestaurantSearch");
+          setInterval(() => {
+            this.isLoading = false;
+            this.$emit("getCurrentComponent", "RestaurantSearch");
+          }, 1000);
         })
         .catch((error) => {
           console.error("APIリクエストエラー:", error);

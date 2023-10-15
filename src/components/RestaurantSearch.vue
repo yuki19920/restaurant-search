@@ -13,6 +13,9 @@
           <p>{{ restaurantCatch(res) }}</p>
         </v-col>
         <v-col cols="12" sm="6" md="4" lg="3">
+          <p>{{ restaurantBudget(res) }}</p>
+        </v-col>
+        <v-col cols="12" sm="6" md="4" lg="3">
           <p>アクセス：{{ restaurantAccess(res) }}</p>
         </v-col>
       </v-row>
@@ -72,13 +75,16 @@ export default {
       return r.photo.pc.m;
     },
     restaurantCatch(r) {
-      return r.urls.catch;
+      return r.catch;
     },
     restaurantAccess(r) {
       return r.access;
     },
     restaurantTotalCount(r) {
       return r.results_availabl;
+    },
+    restaurantBudget(r){
+      return r.budget.average;
     },
     pageChange() {
       axios
