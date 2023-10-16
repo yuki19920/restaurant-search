@@ -140,6 +140,7 @@ export default {
             genre: this.selectedGenre,
           };
           this.$emit("resSearchingInfo", this.resSearchingInfo);
+          console.log(response.data.results);
           setInterval(() => {
             this.isLoading = false;
             this.$emit("getCurrentComponent", "RestaurantSearch");

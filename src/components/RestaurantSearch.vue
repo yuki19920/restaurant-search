@@ -11,12 +11,13 @@
         </v-col>
         <v-col cols="12" sm="6" md="4" lg="3">
           <p>{{ restaurantCatch(res) }}</p>
+          <p>{{ restaurantGenreCatch(res) }}</p>
         </v-col>
         <v-col cols="12" sm="6" md="4" lg="3">
           <p>{{ restaurantBudget(res) }}</p>
         </v-col>
         <v-col cols="12" sm="6" md="4" lg="3">
-          <p>アクセス：{{ restaurantAccess(res) }}</p>
+          <p>{{ restaurantAccess(res) }}</p>
         </v-col>
       </v-row>
     </template>
@@ -85,6 +86,9 @@ export default {
     },
     restaurantBudget(r){
       return r.budget.average;
+    },
+    restaurantGenreCatch(r){
+      return r.genre.catch;
     },
     pageChange() {
       axios
