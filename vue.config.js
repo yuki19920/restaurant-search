@@ -5,15 +5,15 @@ module.exports = defineConfig({
   ]
 })
 
+const isProduction = process.env.NODE_ENV === 'production';
+const apiEndpoint = isProduction ? 'https://webservice.recruit.co.jp' : 'https://webservice.recruit.co.jp';
+
 module.exports = {
   devServer: {
     proxy: {
       '/hotpepper': {  // プロキシのエンドポイントを指定
-        target: 'https://webservice.recruit.co.jp',  // 対象のAPIエンドポイント
+        target: apiEndpoint,  // 対象のAPIエンドポイント
         changeOrigin: true,
-        pathRewrite: {
-          '^/hotpepper': ''  // プロキシパスのリライト（省略）
-        }
       }
     }
   }

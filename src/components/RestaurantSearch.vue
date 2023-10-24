@@ -92,7 +92,7 @@ export default {
     },
     pageChange() {
       axios
-        .get("/hotpepper/hotpepper/gourmet/v1/", {
+        .get("/hotpepper/gourmet/v1/", {
           params: {
             key: this.key,
             lat: this.resSearchingInfo.lat,

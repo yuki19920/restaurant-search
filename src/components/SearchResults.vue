@@ -121,7 +121,7 @@ export default {
     },
     searchRestaurant() {
       axios
-        .get("/hotpepper/hotpepper/gourmet/v1/", {
+        .get(process.env.NODE_ENV === 'production' ? 'https://webservice.recruit.co.jp/hotpepper/gourmet/v1/' : '/hotpepper/gourmet/v1/', {
           params: {
             key: this.key,
             lat: this.latitude,
