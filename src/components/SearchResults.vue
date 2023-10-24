@@ -132,7 +132,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
           this.$emit("restaurants", response.data.results);
           this.resSearchingInfo = {
             lat: this.latitude,
