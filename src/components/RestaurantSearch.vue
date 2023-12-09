@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2 style="margin-bottom: 20px" id="topTitle">飲食店リスト!</h2>
+    <h2 style="margin-bottom: 20px" id="topTitle">飲食店リスト</h2>
     <template v-for="res in searchedRes.shop">
       <v-row :key="restaurantName(res)">
         <v-col cols="12" sm="6" md="4" lg="3">
