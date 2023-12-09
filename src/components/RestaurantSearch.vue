@@ -4,7 +4,11 @@
     <template v-for="res in searchedRes.shop">
       <v-row :key="restaurantName(res)">
         <v-col cols="12" sm="6" md="4" lg="3">
-          <a :href="restaurantUrl(res)" target="_blank" rel="noopener noreferrer">
+          <a
+            :href="restaurantUrl(res)"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <p>{{ restaurantName(res) }}</p>
             <img :src="restaurantThumnail(res)" />
           </a>
@@ -38,6 +42,9 @@
             </v-col>
           </v-row>
         </v-container>
+        <v-overlay :value="isLoading">
+          <v-progress-circular indeterminate size="64" />
+        </v-overlay>
       </div>
     </template>
   </v-container>
@@ -54,15 +61,15 @@ export default {
       page: 1,
       pageSize: 10,
       key: "a3f373377f111532",
-      
+      isLoading: false,
     };
   },
   computed: {
     pageLength: function () {
       return Math.ceil(this.resCount / this.pageSize);
     },
-    getStartPage(){
-        return (this.page - 1)*this.pageSize + 1;
+    getStartPage() {
+      return (this.page - 1) * this.pageSize + 1;
     },
   },
   methods: {
@@ -84,13 +91,14 @@ export default {
     restaurantTotalCount(r) {
       return r.results_availabl;
     },
-    restaurantBudget(r){
+    restaurantBudget(r) {
       return r.budget.average;
     },
-    restaurantGenreCatch(r){
+    restaurantGenreCatch(r) {
       return r.genre.catch;
     },
     pageChange() {
+      this.isLoading = true;
       axios
         .get("/hotpepper/gourmet/v1/", {
           params: {
@@ -103,9 +111,13 @@ export default {
             format: "json",
           },
         })
-        .then((response) => this.searchedRes = response.data.results)
+        .then((response) => {
+          this.searchedRes = response.data.results;
+          this.isLoading = false;
+        })
         .catch((error) => {
           console.log(error);
+          this.isLoading = false;
           alert("飲食店情報が取得できません");
         });
     },

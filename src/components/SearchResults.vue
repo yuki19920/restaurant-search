@@ -93,8 +93,8 @@ export default {
     success(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
-      //this.latitude = "34.663052";
-      //this.longitude = "135.5022679";
+      this.latitude = "35.645736";
+      this.longitude = "139.74757499999998";
       this.searchHotel();
       this.searchRestaurant();
     },
