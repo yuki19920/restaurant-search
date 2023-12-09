@@ -1,23 +1,43 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
-  transpileDependencies: [
-    'vuetify'
-  ]
-})
+  transpileDependencies: ["vuetify"],
 
-const isProduction = process.env.NODE_ENV === 'production';
-const apiEndpoint = isProduction ? 'https://webservice.recruit.co.jp' : 'https://webservice.recruit.co.jp';
+  pluginOptions: {
+    express: {
+      shouldServeApp: true,
+      serverDir: "./srv",
+    },
+  },
+});
+
+// const isProduction = process.env.NODE_ENV === 'production';
+// const apiEndpoint = isProduction ? 'https://webservice.recruit.co.jp' : 'https://webservice.recruit.co.jp';
 
 module.exports = {
   devServer: {
     proxy: {
-      '/hotpepper': {  // プロキシのエンドポイントを指定
-        target: apiEndpoint,  // 対象のAPIエンドポイント
+      "/hotpepper": {
+        // プロキシのエンドポイントを指定
+        target: "https://webservice.recruit.co.jp", // 対象のAPIエンドポイント
         changeOrigin: true,
-      }
-    }
-  }
-}
+      },
+      "/api": {
+        target: "http://localhost:3000", // ExpressサーバーのURL
+        changeOrigin: true,
+        // pathRewrite: {
+        //   "^/api": "", // '/api'を取り除く
+        // },
+      },
+    },
+  },
+
+  pluginOptions: {
+    express: {
+      shouldServeApp: true,
+      serverDir: "./srv",
+    },
+  },
+};
 // module.exports = {
 //   devServer: {
 //     proxy: {

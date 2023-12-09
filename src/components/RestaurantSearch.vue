@@ -60,7 +60,6 @@ export default {
       resCount: this.restaurants.results_available,
       page: 1,
       pageSize: 10,
-      key: "a3f373377f111532",
       isLoading: false,
     };
   },
@@ -100,9 +99,8 @@ export default {
     pageChange() {
       this.isLoading = true;
       axios
-        .get("/hotpepper/gourmet/v1/", {
+        .get("/api/restaurant-data", {
           params: {
-            key: this.key,
             lat: this.resSearchingInfo.lat,
             lng: this.resSearchingInfo.lng,
             range: this.resSearchingInfo.restaurantKm,

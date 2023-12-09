@@ -60,7 +60,7 @@ export default {
         { km: 0.3, id: 1 },
       ],
       restaurantKm: 5,
-      key: "a3f373377f111532",
+
       genre: [
         { id: null, genreName: "-------------------------------" },
         { id: "G001", genreName: "居酒屋" },
@@ -93,8 +93,8 @@ export default {
     success(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
-      this.latitude = "35.645736";
-      this.longitude = "139.74757499999998";
+      // this.latitude = "35.645736";
+      // this.longitude = "139.74757499999998";
       this.searchHotel();
       this.searchRestaurant();
     },
@@ -103,14 +103,13 @@ export default {
     },
     searchHotel() {
       axios
-        .get(
-          "https://app.rakuten.co.jp/services/api/Travel/VacantHotelSearch/20170426?applicationId=1096600551356603387&format=json&datumType=1&latitude=" +
-            this.latitude +
-            "&longitude=" +
-            this.longitude +
-            "&searchRadius=" +
-            this.hotelKm
-        )
+        .get("/api/hotel-data", {
+          params: {
+            latitude: this.latitude,
+            longitude: this.longitude,
+            searchRadius: this.hotelKm
+          }
+        })
         .then((response) => {
           this.$emit("hotels", response.data.hotels);
         })
@@ -121,18 +120,17 @@ export default {
     },
     searchRestaurant() {
       axios
-        .get('/hotpepper/gourmet/v1/', {
+        .get("/api/restaurant-data", {
           params: {
-            key: this.key,
             lat: this.latitude,
             lng: this.longitude,
             range: this.restaurantKm,
             genre: this.selectedGenre,
+            start: "1",
             format: "json",
           },
         })
         .then((response) => {
-          console.log(response.data);
           this.$emit("restaurants", response.data.results);
           this.resSearchingInfo = {
             lat: this.latitude,
@@ -141,13 +139,13 @@ export default {
             genre: this.selectedGenre,
           };
           this.$emit("resSearchingInfo", this.resSearchingInfo);
-          console.log(response.data.results);
           setInterval(() => {
             this.isLoading = false;
             this.$emit("getCurrentComponent", "RestaurantSearch");
           }, 1000);
         })
         .catch((error) => {
+          this.isLoading = false;
           console.error("APIリクエストエラー:", error);
         });
     },
